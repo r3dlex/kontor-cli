@@ -1,4 +1,5 @@
 """Unit tests for kontor_cli.config."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -17,6 +18,7 @@ from kontor_cli.config import (
 def _make_config(tmp_path: Path) -> tuple[Path, dict]:
     """Write MINIMAL_CONFIG to a temp file and return (path, dict)."""
     import yaml
+
     cfg_file = tmp_path / "config.yaml"
     data = _minimal_config()
     with open(cfg_file, "w") as fh:
@@ -66,6 +68,7 @@ def _minimal_config() -> dict:
 class TestConfigLoad:
     def test_load_config_valid(self, tmp_path: Path) -> None:
         import yaml
+
         cfg_file = tmp_path / "config.yaml"
         yaml.safe_dump(_minimal_config(), open(cfg_file, "w"))
         cfg = Config.load(cfg_file)
@@ -86,6 +89,7 @@ class TestConfigLoad:
 
     def test_validate_config_missing_required(self, tmp_path: Path) -> None:
         import yaml
+
         cfg_file = tmp_path / "missing_section.yaml"
         data = _minimal_config()
         del data["account"]
@@ -95,6 +99,7 @@ class TestConfigLoad:
 
     def test_validate_config_invalid_davmail_port(self, tmp_path: Path) -> None:
         import yaml
+
         cfg_file = tmp_path / "bad_port.yaml"
         data = _minimal_config()
         data["davmail"]["imap_port"] = "not-a-port"
@@ -104,6 +109,7 @@ class TestConfigLoad:
 
     def test_validate_config_missing_api_key(self, tmp_path: Path) -> None:
         import yaml
+
         cfg_file = tmp_path / "no_api_key.yaml"
         data = _minimal_config()
         data["llm"]["api_key"] = ""
@@ -117,7 +123,9 @@ class TestCheckPrerequisites:
         cfg_file, _ = _make_config(tmp_path)
         cfg = Config.load(cfg_file)
 
-        with mock.patch("kontor_cli.config.subprocess.run", side_effect=FileNotFoundError()):
+        with mock.patch(
+            "kontor_cli.config.subprocess.run", side_effect=FileNotFoundError()
+        ):
             with pytest.raises(HimalayaNotFoundError, match="not found in PATH"):
                 cfg._check_himalaya()
 
@@ -131,6 +139,7 @@ class TestCheckPrerequisites:
             from packaging.version import parse as parse_ver
 
             from kontor_cli.config import HimalayaNotFoundError
+
             # Simulate running `himalaya --version` and getting "himalaya v0.1.0"
             actual_ver = "0.1.0"
             min_version = "1.0.0"
@@ -140,7 +149,9 @@ class TestCheckPrerequisites:
                     f"Update himalaya or adjust config."
                 )
 
-        with mock.patch.object(cfg, "_check_himalaya", lambda: simulate_old_version(cfg)):
+        with mock.patch.object(
+            cfg, "_check_himalaya", lambda: simulate_old_version(cfg)
+        ):
             with pytest.raises(HimalayaNotFoundError, match="below required"):
                 cfg.check_prerequisites()
 
@@ -158,8 +169,12 @@ class TestCheckPrerequisites:
         cfg_file, _ = _make_config(tmp_path)
         cfg = Config.load(cfg_file)
 
-        with mock.patch("socket.create_connection", side_effect=OSError("Connection refused")):
-            with pytest.raises(DavMailNotReachableError, match="Cannot connect to DavMail"):
+        with mock.patch(
+            "socket.create_connection", side_effect=OSError("Connection refused")
+        ):
+            with pytest.raises(
+                DavMailNotReachableError, match="Cannot connect to DavMail"
+            ):
                 cfg._check_davmail()
 
     def test_check_davmail_ok(self, tmp_path: Path) -> None:

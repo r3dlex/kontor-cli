@@ -1,4 +1,5 @@
 """Unit tests for kontor_cli.pipeline."""
+
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
@@ -21,6 +22,7 @@ def _email(id: str, folder: str, days_ago: int = 30) -> Email:
 
 class MockConfig:
     """Minimal mock config for pipeline tests — only includes what's actually used."""
+
     pipeline_archive_months = 6
     pipeline_llm_failure_alert = 5
     rules_yaml_dir = Path("rules")
@@ -47,6 +49,7 @@ class TestRebuildPipeline:
                         mock_cls.classify.return_value = None
 
                         from kontor_cli.pipeline import RebuildPipeline
+
                         pipeline = RebuildPipeline(MockConfig(), cwd=tmp_path)
                         # Override rules_engine classify with our mock
                         pipeline.rules_engine.classify = lambda e: "2_Projects/PRJ_Test"
@@ -64,6 +67,7 @@ class TestRebuildPipeline:
                 with mock.patch("kontor_cli.pipeline.create_folder"):
                     with mock.patch("kontor_cli.pipeline.Classifier"):
                         from kontor_cli.pipeline import RebuildPipeline
+
                         pipeline = RebuildPipeline(MockConfig(), cwd=tmp_path)
                         pipeline.rules_engine.classify = lambda e: "2_Projects/PRJ_Test"
                         pipeline.rules_engine.get_nl_context = lambda: ""
@@ -81,6 +85,7 @@ class TestRealtimePipeline:
                 with mock.patch("kontor_cli.pipeline.create_folder"):
                     with mock.patch("kontor_cli.pipeline.Classifier"):
                         from kontor_cli.pipeline import RealtimePipeline
+
                         pipeline = RealtimePipeline(MockConfig(), cwd=tmp_path)
                         pipeline.rules_engine.classify = lambda e: "4_Info"
                         pipeline.rules_engine.get_nl_context = lambda: ""
@@ -104,7 +109,9 @@ class TestHealPipeline:
         def list_emails_side_effect(folder, cwd=None):
             raise HimalayaError("No folders")
 
-        with patch("kontor_cli.pipeline.list_emails", side_effect=list_emails_side_effect):
+        with patch(
+            "kontor_cli.pipeline.list_emails", side_effect=list_emails_side_effect
+        ):
             result = pipeline.run(dry_run=True)
 
         # Result must have expected keys
@@ -122,6 +129,7 @@ class TestRulesFreeze:
         evolved.mkdir(parents=True)
 
         import json
+
         (evolved / "20240101_rule.json").write_text(json.dumps({"folder": "4_Info"}))
 
         files = sorted(evolved.glob("*.json"))

@@ -1,4 +1,5 @@
 """Structured logging configuration for kontor-cli."""
+
 from __future__ import annotations
 
 import json

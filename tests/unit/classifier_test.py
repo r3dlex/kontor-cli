@@ -1,4 +1,5 @@
 """Unit tests for kontor_cli.classifier."""
+
 from __future__ import annotations
 
 import json
@@ -39,7 +40,17 @@ class TestClassifier:
     def test_classify_llm_response_parsed(self) -> None:
         mock_response = {
             "choices": [
-                {"message": {"content": json.dumps({"folder": "1_Management", "confidence": 0.9, "action": "none"})}}
+                {
+                    "message": {
+                        "content": json.dumps(
+                            {
+                                "folder": "1_Management",
+                                "confidence": 0.9,
+                                "action": "none",
+                            }
+                        )
+                    }
+                }
             ]
         }
         mock_result = mock.MagicMock()
@@ -47,6 +58,7 @@ class TestClassifier:
         mock_result.raise_for_status = mock.MagicMock()
 
         from kontor_cli.config import Config
+
         cfg = mock.MagicMock(spec=Config)
         cfg.llm_base_url = "https://api.openai.com/v1"
         cfg.llm_api_key = "sk-test"
@@ -69,7 +81,13 @@ class TestClassifier:
     def test_classify_confidence_threshold_low(self) -> None:
         mock_response = {
             "choices": [
-                {"message": {"content": json.dumps({"folder": "0_Action", "confidence": 0.3, "action": "none"})}}
+                {
+                    "message": {
+                        "content": json.dumps(
+                            {"folder": "0_Action", "confidence": 0.3, "action": "none"}
+                        )
+                    }
+                }
             ]
         }
         mock_result = mock.MagicMock()
@@ -77,6 +95,7 @@ class TestClassifier:
         mock_result.raise_for_status = mock.MagicMock()
 
         from kontor_cli.config import Config
+
         cfg = mock.MagicMock(spec=Config)
         cfg.llm_base_url = "https://api.openai.com/v1"
         cfg.llm_api_key = "sk-test"
@@ -99,6 +118,7 @@ class TestClassifier:
         import httpx
 
         from kontor_cli.config import Config
+
         cfg = mock.MagicMock(spec=Config)
         cfg.llm_base_url = "https://api.openai.com/v1"
         cfg.llm_api_key = "sk-test"
@@ -110,7 +130,9 @@ class TestClassifier:
         cls = Classifier(cfg)
 
         with mock.patch("httpx.post") as mock_post:
-            mock_post.side_effect = httpx.HTTPStatusError("rate limited", request=mock.MagicMock(), response=mock.MagicMock())
+            mock_post.side_effect = httpx.HTTPStatusError(
+                "rate limited", request=mock.MagicMock(), response=mock.MagicMock()
+            )
             result = cls.classify(_make_email())
 
         assert result is None
@@ -119,5 +141,6 @@ class TestClassifier:
         # Test that invalid folder names are not blindly accepted
         # We mock at the classify result level to test the validation path
         from kontor_cli.folders import is_valid_folder
+
         assert not is_valid_folder("Invalid_Folder")
         assert is_valid_folder("4_Info")

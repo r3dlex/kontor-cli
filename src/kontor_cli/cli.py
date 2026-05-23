@@ -1,4 +1,5 @@
 """CLI entry point for kontor-cli."""
+
 from __future__ import annotations
 
 import logging
@@ -21,8 +22,18 @@ logger = logging.getLogger("kontor_cli")
 
 
 @click.group()
-@click.option("--log-level", default="INFO", type=str, help="Log level: DEBUG, INFO, WARNING, ERROR")
-@click.option("--log-format", default="json", type=click.Choice(["json", "text"]), help="Log format")
+@click.option(
+    "--log-level",
+    default="INFO",
+    type=str,
+    help="Log level: DEBUG, INFO, WARNING, ERROR",
+)
+@click.option(
+    "--log-format",
+    default="json",
+    type=click.Choice(["json", "text"]),
+    help="Log format",
+)
 @click.pass_context
 def cli(ctx: click.Context, log_level: str, log_format: str) -> None:
     """kontor-cli — Autonomous email management via himalaya + DavMail + LLM."""
@@ -31,8 +42,13 @@ def cli(ctx: click.Context, log_level: str, log_format: str) -> None:
 
 
 @cli.command("check-config")
-@click.option("--config", "config_path", type=click.Path(exists=False, path_type=Path), default=None,
-              help="Path to config.yaml (default: ./config.yaml)")
+@click.option(
+    "--config",
+    "config_path",
+    type=click.Path(exists=False, path_type=Path),
+    default=None,
+    help="Path to config.yaml (default: ./config.yaml)",
+)
 def check_config(config_path: Path | None) -> None:
     """Validate config.yaml and run startup checks (himalaya, DavMail)."""
     try:
@@ -54,7 +70,12 @@ def check_config(config_path: Path | None) -> None:
 @cli.command("classify")
 @click.option("--email-id", required=True, help="Email ID from himalaya envelope list")
 @click.option("--folder", default="INBOX", help="Source folder (default: INBOX)")
-@click.option("--config", "config_path", type=click.Path(exists=False, path_type=Path), default=None)
+@click.option(
+    "--config",
+    "config_path",
+    type=click.Path(exists=False, path_type=Path),
+    default=None,
+)
 def classify(email_id: str, folder: str, config_path: Path | None) -> None:
     """Print the target folder for a given email ID (dry run — no changes)."""
     try:
@@ -64,6 +85,7 @@ def classify(email_id: str, folder: str, config_path: Path | None) -> None:
         sys.exit(1)
 
     from kontor_cli.himalaya import HimalayaError, list_emails
+
     try:
         emails = list_emails(folder)
     except HimalayaError as exc:
@@ -76,10 +98,12 @@ def classify(email_id: str, folder: str, config_path: Path | None) -> None:
         sys.exit(1)
 
     from kontor_cli.rules_engine import RulesEngine
+
     engine = RulesEngine(cfg)
     result = engine.classify(email)
 
     from kontor_cli.folders import get_target_for_email
+
     target = get_target_for_email(
         email.date,
         result,
@@ -89,10 +113,24 @@ def classify(email_id: str, folder: str, config_path: Path | None) -> None:
 
 
 @cli.command("process")
-@click.option("--phase", "phase", required=True, type=click.Choice(["rebuild", "realtime", "heal"]))
-@click.option("--dry-run", is_flag=True, help="Show what would be done without making changes")
-@click.option("--rules-freeze", is_flag=True, help="Snapshot evolved rules before running heal")
-@click.option("--config", "config_path", type=click.Path(exists=False, path_type=Path), default=None)
+@click.option(
+    "--phase",
+    "phase",
+    required=True,
+    type=click.Choice(["rebuild", "realtime", "heal"]),
+)
+@click.option(
+    "--dry-run", is_flag=True, help="Show what would be done without making changes"
+)
+@click.option(
+    "--rules-freeze", is_flag=True, help="Snapshot evolved rules before running heal"
+)
+@click.option(
+    "--config",
+    "config_path",
+    type=click.Path(exists=False, path_type=Path),
+    default=None,
+)
 def process(
     phase: str,
     dry_run: bool,
@@ -128,16 +166,30 @@ def process(
 
 
 @cli.command("dry-run")
-@click.option("--phase", required=True, type=click.Choice(["rebuild", "realtime", "heal"]))
-@click.option("--config", "config_path", type=click.Path(exists=False, path_type=Path), default=None)
+@click.option(
+    "--phase", required=True, type=click.Choice(["rebuild", "realtime", "heal"])
+)
+@click.option(
+    "--config",
+    "config_path",
+    type=click.Path(exists=False, path_type=Path),
+    default=None,
+)
 def dry_run(phase: str, config_path: Path | None) -> None:
     """Show what would be done without making changes. Alias for process --phase X --dry-run."""
     ctx = click.get_current_context()
-    ctx.invoke(process, phase=phase, dry_run=True, rules_freeze=False, config_path=config_path)
+    ctx.invoke(
+        process, phase=phase, dry_run=True, rules_freeze=False, config_path=config_path
+    )
 
 
 @cli.command("rules-freeze")
-@click.option("--config", "config_path", type=click.Path(exists=False, path_type=Path), default=None)
+@click.option(
+    "--config",
+    "config_path",
+    type=click.Path(exists=False, path_type=Path),
+    default=None,
+)
 def rules_freeze_cmd(config_path: Path | None) -> None:
     """Snapshot the current evolved rules state before a heal run."""
     try:
@@ -170,7 +222,9 @@ def _rules_freeze(cfg: Config, root: Path) -> None:
     try:
         with open(snapshot_file, "w") as fh:
             json.dump(snapshot, fh, indent=2)
-        click.echo(f"Frozen snapshot written: {snapshot_file.name} ({len(files)} rule files)")
+        click.echo(
+            f"Frozen snapshot written: {snapshot_file.name} ({len(files)} rule files)"
+        )
     except OSError as exc:
         click.echo(f"Failed to write snapshot: {exc}", err=True)
         sys.exit(1)

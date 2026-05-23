@@ -3,6 +3,7 @@
 Uses `himalaya envelope list` (JSON) to enumerate emails, and
 `himalaya message copy` to move them. Deletion raises DeleteNotSupportedError.
 """
+
 from __future__ import annotations
 
 import json
@@ -23,6 +24,7 @@ class DeleteNotSupportedError(HimalayaError):
 @dataclass
 class Email:
     """Parsed email from himalaya JSON envelope output."""
+
     id: str
     from_addr: str
     subject: str
@@ -34,7 +36,11 @@ class Email:
     def from_json(cls, obj: dict[str, Any], folder: str) -> Email:
         """Parse from a himalaya envelope JSON dict."""
         from_field = obj.get("from", {})
-        addr = from_field.get("address", "") if isinstance(from_field, dict) else str(from_field)
+        addr = (
+            from_field.get("address", "")
+            if isinstance(from_field, dict)
+            else str(from_field)
+        )
         date_str = obj.get("date", "")
         try:
             date = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
@@ -79,11 +85,15 @@ def list_emails(folder: str = "INBOX", cwd: str | None = None) -> list[Email]:
     except json.JSONDecodeError as exc:
         raise HimalayaError(f"himalaya returned invalid JSON: {exc}") from exc
     if not isinstance(envelopes, list):
-        raise HimalayaError(f"himalaya envelope list returned unexpected type: {type(envelopes)}")
+        raise HimalayaError(
+            f"himalaya envelope list returned unexpected type: {type(envelopes)}"
+        )
     return [Email.from_json(e, folder) for e in envelopes]
 
 
-def move_email(email_id: str, from_folder: str, to_folder: str, cwd: str | None = None) -> None:
+def move_email(
+    email_id: str, from_folder: str, to_folder: str, cwd: str | None = None
+) -> None:
     """Move an email from one folder to another using himalaya message copy."""
     _run(["message", "copy", to_folder, email_id, "-f", from_folder], cwd=cwd)
 

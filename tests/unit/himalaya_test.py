@@ -1,4 +1,5 @@
 """Unit tests for kontor_cli.himalaya."""
+
 from __future__ import annotations
 
 import json
@@ -17,14 +18,32 @@ from kontor_cli.himalaya import (
 )
 
 SAMPLE_ENVELOPES = [
-    {"id": "1", "from": {"address": "alice@example.com", "name": "Alice"}, "subject": "Hello", "date": "2024-01-01T10:00:00Z", "flags": {}},
-    {"id": "2", "from": {"address": "bob@example.com", "name": "Bob"}, "subject": "World", "date": "2024-01-02T11:00:00Z", "flags": {"seen": True}},
+    {
+        "id": "1",
+        "from": {"address": "alice@example.com", "name": "Alice"},
+        "subject": "Hello",
+        "date": "2024-01-01T10:00:00Z",
+        "flags": {},
+    },
+    {
+        "id": "2",
+        "from": {"address": "bob@example.com", "name": "Bob"},
+        "subject": "World",
+        "date": "2024-01-02T11:00:00Z",
+        "flags": {"seen": True},
+    },
 ]
 
 
 class TestEmailFromJson:
     def test_email_from_json_basic(self) -> None:
-        env = {"id": "42", "from": {"address": "x@y.com"}, "subject": "Test", "date": "2024-06-15T09:00:00Z", "flags": {"seen": True}}
+        env = {
+            "id": "42",
+            "from": {"address": "x@y.com"},
+            "subject": "Test",
+            "date": "2024-06-15T09:00:00Z",
+            "flags": {"seen": True},
+        }
         email = Email.from_json(env, "INBOX")
         assert email.id == "42"
         assert email.from_addr == "x@y.com"
@@ -39,7 +58,9 @@ class TestListEmails:
         mock_result.stdout = json.dumps(SAMPLE_ENVELOPES)
         mock_result.returncode = 0
 
-        with mock.patch("kontor_cli.himalaya.subprocess.run", return_value=mock_result) as p:
+        with mock.patch(
+            "kontor_cli.himalaya.subprocess.run", return_value=mock_result
+        ) as p:
             emails = list_emails("INBOX")
             p.assert_called_once()
             assert len(emails) == 2
@@ -66,7 +87,9 @@ class TestListEmails:
                 list_emails("INBOX")
 
     def test_himalaya_not_found(self) -> None:
-        with mock.patch("kontor_cli.himalaya.subprocess.run", side_effect=FileNotFoundError()):
+        with mock.patch(
+            "kontor_cli.himalaya.subprocess.run", side_effect=FileNotFoundError()
+        ):
             with pytest.raises(HimalayaError, match="not found in PATH"):
                 list_emails("INBOX")
 
@@ -76,11 +99,21 @@ class TestMoveEmail:
         mock_result = mock.MagicMock()
         mock_result.returncode = 0
 
-        with mock.patch("kontor_cli.himalaya.subprocess.run", return_value=mock_result) as p:
+        with mock.patch(
+            "kontor_cli.himalaya.subprocess.run", return_value=mock_result
+        ) as p:
             move_email("42", "INBOX", "Archive/INBOX")
             p.assert_called_once()
             args = p.call_args[0][0]
-            assert args == ["himalaya", "message", "copy", "Archive/INBOX", "42", "-f", "INBOX"]
+            assert args == [
+                "himalaya",
+                "message",
+                "copy",
+                "Archive/INBOX",
+                "42",
+                "-f",
+                "INBOX",
+            ]
 
 
 class TestCreateFolder:
@@ -88,7 +121,9 @@ class TestCreateFolder:
         mock_result = mock.MagicMock()
         mock_result.returncode = 0
 
-        with mock.patch("kontor_cli.himalaya.subprocess.run", return_value=mock_result) as p:
+        with mock.patch(
+            "kontor_cli.himalaya.subprocess.run", return_value=mock_result
+        ) as p:
             create_folder("2_Projects/PRJ_Test")
             p.assert_called_once()
             args = p.call_args[0][0]

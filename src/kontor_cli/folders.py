@@ -1,4 +1,5 @@
 """Folder taxonomy model and archive enforcement for kontor-cli."""
+
 from __future__ import annotations
 
 from datetime import datetime
@@ -104,11 +105,16 @@ def get_target_for_email(
         return "4_Info"
 
     # Check if already in Archive tree
-    if classified_folder.startswith(ARCHIVE_ROOT + "/") or classified_folder == ARCHIVE_ROOT:
+    if (
+        classified_folder.startswith(ARCHIVE_ROOT + "/")
+        or classified_folder == ARCHIVE_ROOT
+    ):
         return classified_folder
 
     # Apply archive enforcement
-    threshold = datetime.now(email_date.tzinfo) - relativedelta(months=archive_age_months)
+    threshold = datetime.now(email_date.tzinfo) - relativedelta(
+        months=archive_age_months
+    )
     if email_date < threshold:
         return get_archive_path(classified_folder)
 
