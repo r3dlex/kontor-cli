@@ -1,4 +1,5 @@
 """LLM-based email classifier for kontor-cli."""
+
 from __future__ import annotations
 
 import logging
@@ -18,6 +19,7 @@ logger = logging.getLogger("kontor_cli.classifier")
 @dataclass
 class ClassificationResult:
     """Result from LLM classification."""
+
     folder: str
     confidence: float
     action: str  # "adjust" | "create" | "none"
@@ -60,7 +62,9 @@ For each email, you MUST respond with ONLY valid JSON:
 """
 
 
-def build_prompt(email: Email, taxonomy: str, rules_context: str, yaml_rules: str = "") -> str:
+def build_prompt(
+    email: Email, taxonomy: str, rules_context: str, yaml_rules: str = ""
+) -> str:
     """Build the classification prompt for the LLM."""
     return f"""{SYSTEM_PROMPT}
 
@@ -122,7 +126,9 @@ class Classifier:
             )
             response.raise_for_status()
         except httpx.HTTPStatusError as exc:
-            logger.error(f"LLM API returned {exc.response.status_code}: {exc.response.text[:200]}")
+            logger.error(
+                f"LLM API returned {exc.response.status_code}: {exc.response.text[:200]}"
+            )
             return None
         except httpx.RequestError as exc:
             logger.error(f"LLM API request failed: {exc}")
@@ -133,14 +139,17 @@ class Classifier:
             content = data["choices"][0]["message"]["content"]
             # Strip markdown code fences if present
             if content.strip().startswith("```"):
-                content = content.strip()[content.strip().find("\n") + 1:]
+                content = content.strip()[content.strip().find("\n") + 1 :]
                 if content.endswith("```"):
                     content = content[:-3].strip()
             result: dict[str, Any] = {}
             import json
+
             result = json.loads(content)
         except (KeyError, IndexError, json.JSONDecodeError) as exc:
-            logger.error(f"Failed to parse LLM response: {exc} — content: {content[:200]}")
+            logger.error(
+                f"Failed to parse LLM response: {exc} — content: {content[:200]}"
+            )
             return None
 
         folder = result.get("folder", "4_Info")

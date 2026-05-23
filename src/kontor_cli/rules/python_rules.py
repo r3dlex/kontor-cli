@@ -1,4 +1,5 @@
 """Python module rule loader for kontor-cli."""
+
 from __future__ import annotations
 
 import importlib.util

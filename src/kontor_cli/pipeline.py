@@ -1,4 +1,5 @@
 """Pipeline orchestrator — Rebuild, Realtime, and Heal phases."""
+
 from __future__ import annotations
 
 import json
@@ -76,21 +77,31 @@ class Pipeline:
         # Step 3: Loop prevention
         if (email.id, target) in self.move_history:
             self.skipped_loop += 1
-            logger.info(f"Skipping email {email.id} — already scheduled for {target}", extra={"email_id": email.id})
+            logger.info(
+                f"Skipping email {email.id} — already scheduled for {target}",
+                extra={"email_id": email.id},
+            )
             return None
         self.move_history.add((email.id, target))
 
         # Step 4: Already in correct folder
         if current_folder == target:
             self.skipped_already_correct += 1
-            logger.debug(f"Email {email.id} already in correct folder: {target}", extra={"email_id": email.id})
+            logger.debug(
+                f"Email {email.id} already in correct folder: {target}",
+                extra={"email_id": email.id},
+            )
             return target  # type: ignore[no-any-return]
 
         # Step 5: Dry run
         if dry_run:
             logger.info(
                 f"[DRY-RUN] Would move email {email.id} from {current_folder} to {target}",
-                extra={"email_id": email.id, "folder": target, "moves_made": self.moves_made},
+                extra={
+                    "email_id": email.id,
+                    "folder": target,
+                    "moves_made": self.moves_made,
+                },
             )
             return target  # type: ignore[no-any-return]
 
@@ -101,10 +112,16 @@ class Pipeline:
             self.moves_made += 1
             logger.info(
                 f"Moved email {email.id} from {current_folder} to {target}",
-                extra={"email_id": email.id, "folder": target, "moves_made": self.moves_made},
+                extra={
+                    "email_id": email.id,
+                    "folder": target,
+                    "moves_made": self.moves_made,
+                },
             )
         except HimalayaError as exc:
-            logger.error(f"Failed to move email {email.id}: {exc}", extra={"email_id": email.id})
+            logger.error(
+                f"Failed to move email {email.id}: {exc}", extra={"email_id": email.id}
+            )
 
         return target  # type: ignore[no-any-return]
 
@@ -145,7 +162,11 @@ class Pipeline:
                 json.dump(entry, fh, indent=2)
             logger.info(
                 f"Logged LLM rule decision to {log_file.name}",
-                extra={"email_id": email.id, "llm_action": result.action, "folder": result.folder},
+                extra={
+                    "email_id": email.id,
+                    "llm_action": result.action,
+                    "folder": result.folder,
+                },
             )
         except OSError as exc:
             logger.error(f"Failed to write evolved rule log: {exc}")
@@ -157,7 +178,15 @@ class RebuildPipeline(Pipeline):
     def run(self, dry_run: bool = False) -> dict:
         logger.info("Starting Historical Rebuild", extra={"phase": "rebuild"})
         total_processed = 0
-        folders = ["INBOX", "0_Action", "1_Management", "2_Projects", "3_External", "4_Info", "9_System"]
+        folders = [
+            "INBOX",
+            "0_Action",
+            "1_Management",
+            "2_Projects",
+            "3_External",
+            "4_Info",
+            "9_System",
+        ]
 
         for folder in folders:
             try:
@@ -222,8 +251,13 @@ class HealPipeline(Pipeline):
     def run(self, dry_run: bool = False) -> dict:
         logger.info("Starting Self-Healing Loop", extra={"phase": "heal"})
         folders = [
-            "INBOX", "0_Action", "1_Management", "2_Projects",
-            "3_External", "4_Info", "9_System",
+            "INBOX",
+            "0_Action",
+            "1_Management",
+            "2_Projects",
+            "3_External",
+            "4_Info",
+            "9_System",
         ]
 
         total = 0

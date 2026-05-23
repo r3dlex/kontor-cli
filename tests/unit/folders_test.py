@@ -1,4 +1,5 @@
 """Unit tests for kontor_cli.folders."""
+
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
@@ -52,7 +53,9 @@ class TestArchivePath:
     def test_archive_mirror_path(self) -> None:
         assert get_archive_path("0_Action") == "Archive/0_Action"
         assert get_archive_path("1_Management/MGT_HR") == "Archive/1_Management/MGT_HR"
-        assert get_archive_path("Archive/2_Projects") == "Archive/2_Projects"  # no double-wrap
+        assert (
+            get_archive_path("Archive/2_Projects") == "Archive/2_Projects"
+        )  # no double-wrap
 
 
 class TestIsOlderThan6Months:
@@ -69,6 +72,7 @@ class TestIsOlderThan6Months:
         # The function uses strictly < threshold. Test that a date clearly
         # in the past (1 year ago) is flagged as older.
         from dateutil.relativedelta import relativedelta
+
         one_year_ago = datetime.now(UTC) - relativedelta(years=1)
         assert is_older_than_6months(one_year_ago)
 
@@ -76,7 +80,10 @@ class TestIsOlderThan6Months:
 class TestGetTargetForEmail:
     def test_classified_folder(self) -> None:
         recent = datetime.now(UTC) - timedelta(days=30)
-        assert get_target_for_email(recent, "2_Projects/PRJ_Test", 6) == "2_Projects/PRJ_Test"
+        assert (
+            get_target_for_email(recent, "2_Projects/PRJ_Test", 6)
+            == "2_Projects/PRJ_Test"
+        )
 
     def test_no_classification_defaults_to_4_info(self) -> None:
         recent = datetime.now(UTC) - timedelta(days=30)
@@ -84,8 +91,14 @@ class TestGetTargetForEmail:
 
     def test_old_email_goes_to_archive(self) -> None:
         old = datetime(2020, 1, 1, tzinfo=UTC)
-        assert get_target_for_email(old, "2_Projects/PRJ_Test", 6) == "Archive/2_Projects/PRJ_Test"
+        assert (
+            get_target_for_email(old, "2_Projects/PRJ_Test", 6)
+            == "Archive/2_Projects/PRJ_Test"
+        )
 
     def test_already_in_archive_stays(self) -> None:
         old = datetime(2020, 1, 1, tzinfo=UTC)
-        assert get_target_for_email(old, "Archive/2_Projects/PRJ_Test", 6) == "Archive/2_Projects/PRJ_Test"
+        assert (
+            get_target_for_email(old, "Archive/2_Projects/PRJ_Test", 6)
+            == "Archive/2_Projects/PRJ_Test"
+        )

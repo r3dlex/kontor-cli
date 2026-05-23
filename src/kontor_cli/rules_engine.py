@@ -1,4 +1,5 @@
 """Unified rules engine — evaluates YAML DSL → Python → NL rules in priority order."""
+
 from __future__ import annotations
 
 import logging

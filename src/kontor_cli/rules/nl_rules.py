@@ -1,4 +1,5 @@
 """Natural-language rule file loader for kontor-cli."""
+
 from __future__ import annotations
 
 from pathlib import Path

@@ -1,4 +1,5 @@
 """YAML DSL rule evaluator for kontor-cli."""
+
 from __future__ import annotations
 
 import re
@@ -11,6 +12,7 @@ import yaml
 @dataclass
 class YamlRule:
     """A single YAML DSL rule."""
+
     pattern: str | None
     from_addr: str | None
     subject: str | None
@@ -78,14 +80,16 @@ def _load_file(path: Path) -> list[YamlRule]:
     for entry in entries:
         if not isinstance(entry, dict):
             continue
-        rules.append(YamlRule(
-            pattern=entry.get("pattern"),
-            from_addr=entry.get("from"),
-            subject=entry.get("subject"),
-            to=entry.get("to"),
-            folder=entry.get("folder", ""),
-            priority=entry.get("priority", 0),
-        ))
+        rules.append(
+            YamlRule(
+                pattern=entry.get("pattern"),
+                from_addr=entry.get("from"),
+                subject=entry.get("subject"),
+                to=entry.get("to"),
+                folder=entry.get("folder", ""),
+                priority=entry.get("priority", 0),
+            )
+        )
     return rules
 
 

@@ -1,4 +1,5 @@
 """Sample Python rules for testing."""
+
 from kontor_cli.himalaya import Email
 
 

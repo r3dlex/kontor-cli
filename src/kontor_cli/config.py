@@ -1,4 +1,5 @@
 """Configuration loader and validator for kontor-cli."""
+
 from __future__ import annotations
 
 import re
@@ -47,8 +48,12 @@ class Config:
         self.rules_nl_dir: Path = Path(data["rules"]["nl_rules_dir"])
         self.rules_evolved_dir: Path = Path(data["rules"]["evolved_dir"])
         self.pipeline_archive_months: int = data["pipeline"]["archive_age_months"]
-        self.pipeline_confidence_threshold: float = data["pipeline"]["confidence_threshold"]
-        self.pipeline_llm_failure_alert: int = data["pipeline"]["llm_failure_alert_threshold"]
+        self.pipeline_confidence_threshold: float = data["pipeline"][
+            "confidence_threshold"
+        ]
+        self.pipeline_llm_failure_alert: int = data["pipeline"][
+            "llm_failure_alert_threshold"
+        ]
         self.log_level: str = data["logging"]["level"]
         self.log_format: str = data["logging"]["format"]
 
@@ -60,7 +65,9 @@ class Config:
         path = Path(path)
 
         if not path.exists():
-            raise ConfigError(f"Config file not found: {path}. Copy config.example.yaml to config.yaml and fill in your values.")
+            raise ConfigError(
+                f"Config file not found: {path}. Copy config.example.yaml to config.yaml and fill in your values."
+            )
 
         try:
             with open(path) as fh:
@@ -73,7 +80,15 @@ class Config:
 
     @classmethod
     def _validate_required(cls, data: dict[str, Any], path: Path) -> None:
-        required_sections = ["himalaya", "davmail", "account", "llm", "rules", "pipeline", "logging"]
+        required_sections = [
+            "himalaya",
+            "davmail",
+            "account",
+            "llm",
+            "rules",
+            "pipeline",
+            "logging",
+        ]
         for section in required_sections:
             if section not in data:
                 raise ConfigError(f"Missing required section '{section}' in {path}")
@@ -105,7 +120,9 @@ class Config:
                 "himalaya not found in PATH. Install it: https://github.com/tobiassjosten/himalaya"
             ) from None
         except subprocess.CalledProcessError as exc:
-            raise HimalayaNotFoundError(f"himalaya --version failed: {exc.stderr}") from exc
+            raise HimalayaNotFoundError(
+                f"himalaya --version failed: {exc.stderr}"
+            ) from exc
 
         version_line = result.stdout.splitlines()[0] if result.stdout else ""
         # Extract version number from output (e.g. "himalaya v1.0.0" or "himalaya 1.0.0")
@@ -118,6 +135,7 @@ class Config:
         if self.himalaya_version.startswith(">="):
             from packaging.version import InvalidVersion
             from packaging.version import parse as parse_ver
+
             min_version = self.himalaya_version[2:]
             try:
                 actual_parsed = parse_ver(actual_ver)

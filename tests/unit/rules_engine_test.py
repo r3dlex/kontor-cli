@@ -1,4 +1,5 @@
 """Unit tests for kontor_cli.rules_engine."""
+
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -76,7 +77,9 @@ class TestPythonRules:
 class TestNlRules:
     def test_nl_rules_format_loaded(self, tmp_path: Path) -> None:
         nl_file = tmp_path / "guidelines.rules.txt"
-        nl_file.write_text("All invoices from accounting@ go to Finance.\n---\nPR emails go to 3_External.")
+        nl_file.write_text(
+            "All invoices from accounting@ go to Finance.\n---\nPR emails go to 3_External."
+        )
         loaded = nl_rules.load_nl_rules(tmp_path)
         assert len(loaded) == 2
         assert "invoices" in loaded[0]
@@ -97,10 +100,7 @@ class TestRulesEngine:
             yaml.safe_dump([{"from": "alice@example.com", "folder": "YAML_Folder"}], fh)
         # Python rule (should not fire because YAML matched first)
         rules_file = tmp_path / "rules.py"
-        rules_file.write_text(
-            "def classify(email):\n"
-            "    return 'Python_Folder'\n"
-        )
+        rules_file.write_text("def classify(email):\n    return 'Python_Folder'\n")
         nl_file = tmp_path / "guidelines.rules.txt"
         nl_file.write_text("NL rule")
 
