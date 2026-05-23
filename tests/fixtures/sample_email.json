@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1001",
+    "from": { "address": "alice@example.com", "name": "Alice" },
+    "subject": "Q1 Budget Report",
+    "date": "2024-03-15T10:00:00Z",
+    "flags": { "seen": true }
+  },
+  {
+    "id": "1002",
+    "from": { "address": "ci@gitlab.com", "name": "GitLab CI" },
+    "subject": "[CI] Pipeline failed: main #42",
+    "date": "2024-03-15T11:00:00Z",
+    "flags": {}
+  }
+]

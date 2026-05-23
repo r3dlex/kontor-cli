@@ -1,0 +1,44 @@
+# kontor-cli configuration
+# Copy this file to config.yaml and fill in your values.
+# config.yaml is gitignored — NEVER commit real credentials.
+
+himalaya:
+  # Minimum required himalaya version (must match what you have installed)
+  version: ">=1.0.0"
+
+davmail:
+  host: localhost
+  imap_port: 1110
+  smtp_port: 1025
+  http_proxy_port: 3128
+
+account:
+  email: "your.email@domain.com"
+  display_name: "Your Name"
+  imap_host: localhost
+  imap_port: 1110
+  smtp_host: localhost
+  smtp_port: 1025
+
+llm:
+  base_url: "https://api.openai.com/v1"
+  api_key: "sk-your-api-key-here"
+  model: "gpt-4o"
+  temperature: 0.0
+  timeout: 30
+
+rules:
+  # Paths are relative to the kontor-cli project root (where config.yaml lives)
+  yaml_dir: "rules"
+  python_rules_file: "rules/rules.py"
+  nl_rules_dir: "rules"
+  evolved_dir: "rules/evolved"
+
+pipeline:
+  archive_age_months: 6
+  confidence_threshold: 0.7
+  llm_failure_alert_threshold: 5
+
+logging:
+  level: "INFO"
+  format: "json"

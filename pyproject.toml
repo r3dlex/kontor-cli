@@ -1,0 +1,53 @@
+[project]
+name = "kontor-cli"
+version = "0.1.0"
+description = "Autonomous email management CLI using himalaya + DavMail + LLM classifier"
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.1.0",
+    "pyyaml>=6.0",
+    "httpx>=0.27.0",
+    "python-dateutil>=2.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-mock>=3.12.0",
+]
+
+[project.scripts]
+kontor-cli = "kontor_cli.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kontor_cli"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit"]
+markers = ["integration: marks tests requiring DavMail"]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.1.0",
+    "pytest>=9.0.3",
+    "pytest-mock>=3.15.1",
+    "ruff>=0.15.14",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4"]
+ignore = ["E501", "B028"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true

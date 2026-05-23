@@ -1,0 +1,7 @@
+- from: "@gitlab"
+  subject: "pipeline"
+  folder: "9_System"
+- from: "@slack"
+  folder: "9_System"
+- pattern: "budget|report|forecast"
+  folder: "1_Management/MGT_Finance"

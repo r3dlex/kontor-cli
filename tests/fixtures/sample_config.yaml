@@ -1,0 +1,32 @@
+himalaya:
+  version: ">=1.0.0"
+davmail:
+  host: localhost
+  imap_port: 1110
+  smtp_port: 1025
+  http_proxy_port: 3128
+account:
+  email: "test@example.com"
+  display_name: "Test User"
+  imap_host: localhost
+  imap_port: 1110
+  smtp_host: localhost
+  smtp_port: 1025
+llm:
+  base_url: "https://api.openai.com/v1"
+  api_key: "sk-test-fixture-key"
+  model: "gpt-4o"
+  temperature: 0.0
+  timeout: 30
+rules:
+  yaml_dir: "rules"
+  python_rules_file: "rules/rules.py"
+  nl_rules_dir: "rules"
+  evolved_dir: "rules/evolved"
+pipeline:
+  archive_age_months: 6
+  confidence_threshold: 0.7
+  llm_failure_alert_threshold: 5
+logging:
+  level: "WARNING"
+  format: "json"
