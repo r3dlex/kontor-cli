@@ -12,11 +12,23 @@
   folder: "2_Projects/Sales"
   priority: 90
 
+# --- PRIORITY 89: India team ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Ii]ndia.*|[Bb]angalore.*|R&D [Mm]anager [Ii]ndia|India [Cc]olleague.*|India [Tt]eam.*"
+  folder: "2_Projects/India"
+  priority: 89
+
 # --- PRIORITY 88: Development / Pull Requests / Code Review ---
 - from: ".*rib-software\\.com"
   subject: ".*[Pp]ull [Rr]equest.*|[Cc]ode [Ff]reeze.*|[Mm]erge [Cc]ode.*|Approval for [Pp]ull.*"
   folder: "2_Projects/Development"
   priority: 88
+
+# --- PRIORITY 87: Security / Compliance ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Ss]ecurity.*|[Cc]ompliance.*|[Aa]udit.*|[Vv]ulnerab.*|[Pp]entest.*"
+  folder: "2_Projects/Security"
+  priority: 87
 
 # --- PRIORITY 86: China team ---
 - from: ".*rib-software\\.com"
@@ -30,56 +42,32 @@
   folder: "2_Projects/Trivium"
   priority: 84
 
-# --- PRIORITY 82: Internal Management / Strategy / Management Onsite ---
+# --- PRIORITY 82: Internal Management / Strategy ---
 - from: ".*rib-software\\.com"
-  subject: ".*[Mm]anagement [Oo]nsite.*|[Rr]&[Dd] [Mm]gt.*|[Ss]trategy.*[Ss]ession.*|Track.*[Ii]nvestment.*"
+  subject: ".*[Mm]anagement [Oo]nsite.*|[Rr]&[Dd] [Mm]gt.*|[Ss]trategy.*[Ss]ession.*|Track.*[Ii]nvestment.*|[Ii]nternal [Pp]roject.*|[Oo]rganization [Uu]pdate.*"
   folder: "2_Projects/Internal"
   priority: 82
 
 # --- PRIORITY 80: Recruiting / Team Structure (non-HR admin) ---
 - from: ".*rib-software\\.com"
-  subject: ".*[Bb]IM [Tt]eam.*|[Tt]eam [Ss]tructure.*|[Nn]ew [Ff]unction for.*|[Oo]pen.*[Pp]ositions.*"
+  subject: ".*[Rr]ecruit.*|[Hh]iring.*|[Jj]ob [Dd]escription.*|[Pp]osition.*[Oo]pen.*|[Tt]eam [Ss]tructure.*|[O]rganigram.*"
   folder: "2_Projects/Internal"
   priority: 80
 
-# --- PRIORITY 78: Meetings / Syncs / 1:1 ---
+# --- PRIORITY 78: Onboarding / Offboarding ---
 - from: ".*rib-software\\.com"
-  subject: ".*[Ss]ync on.*|[Ss]teerco.*|[Tt]rack.*[Bb]acklog.*|[Dd]iscovery [Mm]eeting.*"
+  subject: ".*[Oo]nboard.*|[Oo]ffboard.*|[Ww]elcome.*[Nn]ew.*|[Ff]arewell.*|[Ll]eaving.*|New [Cc]olleague.*"
   folder: "2_Projects/Internal"
   priority: 78
 
-# --- PRIORITY 76: Setup sessions (AI / Track 1) ---
+# --- PRIORITY 76: Estimators / Costing ---
 - from: ".*rib-software\\.com"
-  subject: ".*[Ww]riting [Ff]eedback.*|[Gg]reat [Cc]opilot.*|[Cc]opilot [Jj]ourney.*"
-  folder: "2_Projects/RIB-4.0/AI"
+  subject: ".*[Ee]stimat.*|[Cc]ost.*[Mm]odel.*|[Pp]ric.*|[Bb]udget.*[Pp]lan.*|QV.*"
+  folder: "2_Projects/Internal"
   priority: 76
 
-# --- PRIORITY 74: Security-related (non-system) ---
+# --- PRIORITY 74: RIB-4.0 platform topics (non-release) ---
 - from: ".*rib-software\\.com"
-  subject: ".*[Ss]ecurity.*[Ii]ssue.*|Vulnerab.*|jsPDF.*"
-  folder: "2_Projects/Security"
+  subject: ".*[Rr]ib[-\\. ]4\\.0.*|[Rr]ib4[ _\\.].*|[Pp]latform.*[Rr]oadmap.*|ITWO 4\\.0.*"
+  folder: "2_Projects/Internal"
   priority: 74
-
-# --- PRIORITY 72: Finance / Budget / Rechnung (internal) ---
-- from: ".*rib-software\\.com"
-  subject: ".*[Ff]inance [Ii]ntegration.*|[Rr]echnung.*|[Ii]nvoice.*|[Bb]udget.*"
-  folder: "2_Projects/Finance"
-  priority: 72
-
-# --- PRIORITY 70: Kubernetes / Infra ---
-- from: ".*rib-software\\.com"
-  subject: ".*[Kk]ubernetes.*|[Dd]ocker.*|[Ii]nfra.*|[Cc]luster.*"
-  folder: "2_Projects/Infrastructure"
-  priority: 70
-
-# --- PRIORITY 68: Augment partnership ---
-- from: ".*rib-software\\.com"
-  subject: ".*[Aa]ugment.*"
-  folder: "2_Projects/Augment"
-  priority: 68
-
-# --- PRIORITY 66: Performance / Bug Reports ---
-- from: ".*rib-software\\.com"
-  subject: ".*[Pp]erformance.*[Ii]ssue.*|[Ss]ituation case.*|[Bb]ug.*[Rr]eport.*|Mängelanzeige.*"
-  folder: "2_Projects/Development"
-  priority: 66

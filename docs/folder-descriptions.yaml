@@ -1,0 +1,249 @@
+# kontor-cli Folder Descriptions
+# This file documents every live folder's purpose, what emails go there,
+# and routing hints for the classification engine.
+# Keep this in sync with rules/rules.d/*.yaml.
+
+# ============================================================
+# TOP-LEVEL FOLDERS
+# ============================================================
+
+0_Action:
+  description: "Flagged actionable emails requiring a response, decision, or follow-up"
+  scope: "Questions, requests, decisions, deadlines, C-level asks, escalation items"
+  examples:
+    - "Request for approval of..."
+    - "Can you review..."
+    - "Decision needed on..."
+    - "Deadline: ..."
+  notes: "Emails are COPIED here (flag), not moved. Original stays in its classification folder."
+
+1_Management:
+  description: "Directory for management-related subfolders"
+  scope: "Parent container - no emails stored directly here"
+
+1_Management/1on1:
+  description: "One-on-one meeting notes, preparation, and follow-ups"
+  scope: "1:1s with direct reports, skip-level meetings, sync sessions"
+  examples:
+    - "1:1 with ..."
+    - "Sync on ..."
+    - "One-on-one notes"
+  key_senders: ["Georg Reitschmidt", "Adam Lipinski", "Jón Sigbjörnsson"]
+
+1_Management/HR:
+  description: "HR-related communications, people processes, Workday"
+  scope: "Workday notifications, performance reviews, HR policies, employee relations"
+  examples:
+    - "Performance Improvement Plan"
+    - "Workday: ..."
+    - "HR policy update..."
+  key_senders: ["hr.ger@rib-software.com", "myworkday.com"]
+
+1_Management/Leadership:
+  description: "Executive communications, management board topics"
+  scope: "Geschäftsführung, Vorstand, leadership decisions, org changes"
+  examples:
+    - "Management Board..."
+    - "Geschäftsführung..."
+    - "Leadership offsite..."
+    - "Teilwiderruf..."
+  key_senders: ["Cordula Trillhaas", "Rolf Helmes", "Georg Reitschmidt"]
+
+# ============================================================
+# PROJECT FOLDERS (2_Projects)
+# ============================================================
+
+2_Projects:
+  description: "Directory for project-related subfolders"
+  scope: "Parent container - no emails stored directly here"
+
+2_Projects/AI:
+  description: "AI/ML initiatives: Copilot, Augment, Claude, OpenAI, LLMs, AI SDLC"
+  scope: "AI tooling, AI incubator, AI guild, Copilot evaluations, Augment sessions, LLM experiments, AI-related architectural discussions"
+  examples:
+    - "AI Incubator session..."
+    - "Copilot evaluation results"
+    - "Augment coding session..."
+    - "Claude usage patterns"
+    - "GPT-5 analysis..."
+    - "AI SDLC..."
+    - "AI Guild meeting..."
+  key_senders: ["Andre Burgstahler", "internal AI team"]
+  note: "Supersedes the old 2_Projects/Augment folder (deleted)"
+
+2_Projects/China:
+  description: "RIB China team communications and Shanghai office topics"
+  scope: "China team coordination, Shanghai office, CN-specific projects"
+  examples:
+    - "China Team update..."
+    - "Shanghai office..."
+    - "RIB4.0 China..."
+
+2_Projects/Development:
+  description: "Development workflow, pull requests, code reviews, technical discussions"
+  scope: "PR approvals, code freezes, merge requests, technical decisions, architecture reviews"
+  examples:
+    - "Pull Request: ..."
+    - "Code Freeze for..."
+    - "Merge Code..."
+    - "Approval for Pull..."
+
+2_Projects/India:
+  description: "RIB India team communications and Bangalore office topics"
+  scope: "India team coordination, Bangalore office, India-specific hiring, India colleague visits"
+  examples:
+    - "Job Description - RD Manager India"
+    - "Visit of India colleagues"
+    - "India team update..."
+  key_senders: ["Arthur Berganski"]
+  note: "Created 2026-05-24"
+
+2_Projects/Internal:
+  description: "Internal RIB projects, strategy, recruiting, onboarding, management topics"
+  scope: "Internal initiatives that don't fit a specific customer or topic folder. Recruiting, onboarding, team structure, org updates, R&D management, strategy sessions, estimators/costing, platform roadmap"
+  examples:
+    - "Management Onsite..."
+    - "Strategy Session..."
+    - "Job Description..."
+    - "Welcome to the team..."
+    - "Estimate for..."
+    - "Platform Roadmap..."
+    - "R&D mgt..."
+  notes: "388 emails - largest project folder. Consider sub-categorizing if growth continues."
+
+2_Projects/Releases:
+  description: "Release management, version planning, release communication"
+  scope: "Release thermometers, version schedules, release notes, deployment coordination"
+  examples:
+    - "Thermometer..."
+    - "Release 2026.1..."
+    - "Release status..."
+
+2_Projects/Sales:
+  description: "Sales commitments, purchase orders, BoQs, sales configuration"
+  scope: "Opportunity tracking, sales commitments, BoQ discussions, purchase orders, sales manager communications"
+  examples:
+    - "Sales Commitment..."
+    - "BoQ for..."
+    - "Purchase Order..."
+    - "Opportunity..."
+
+2_Projects/Security:
+  description: "Security, compliance, audit, vulnerability management"
+  scope: "Penetration tests, security audits, vulnerability reports, compliance requirements"
+  examples:
+    - "Security audit..."
+    - "Vulnerability report..."
+    - "Pentest results..."
+    - "Compliance check..."
+
+2_Projects/Trivium:
+  description: "Trivium collaboration - RIB internal partnership"
+  scope: "Trivium-related project communications, coordination"
+  examples:
+    - "Trivium update..."
+
+2_Projects/Vinci:
+  description: "Customer Vinci and related sub-contractors (Eiffage, Budimex)"
+  scope: "Vinci customer communications, escalations, hypercare. Also captures Eiffage and Budimex (sub-contractors under Vinci framework)"
+  examples:
+    - "Vinci escalation..."
+    - "Eiffage hypercare..."
+    - "Ratibsona/Budimex..."
+    - "CRITICAL..."
+
+2_Projects/Willemen:
+  description: "Customer Willemen communications"
+  scope: "Willemen project management, escalations, hypercare"
+  examples:
+    - "Willemen update..."
+    - "Hypercare..."
+    - "Escalation..."
+
+# ============================================================
+# EXTERNAL FOLDERS (3_External)
+# ============================================================
+
+3_External:
+  description: "Directory for external-company subfolders"
+  scope: "Parent container - no emails stored directly here"
+
+3_External/CoachHub:
+  description: "CoachHub coaching platform communications"
+  scope: "CoachHub session invites, coaching reminders, platform notifications"
+  key_senders: ["support@coachhub.io"]
+
+3_External/GitHub:
+  description: "GitHub notifications (repos outside RIB Azure DevOps)"
+  scope: "GitHub issue/PR notifications, GitHub Actions, repository invites"
+
+3_External/HeroDevs:
+  description: "HeroDevs (formerly HeroCoders) vendor communications"
+  scope: "HeroDevs product updates, licensing, support"
+
+3_External/Microsoft:
+  description: "Microsoft-related communications, licensing, partner updates"
+  scope: "Microsoft partner communications, Azure updates, licensing, Microsoft events"
+
+3_External/Miro:
+  description: "Miro board notifications and collaboration updates"
+  scope: "Miro board invites, comments, and sharing notifications"
+
+3_External/Mitarbeiterangebote:
+  description: "German employee benefits portal (Mitarbeiterangebote)"
+  scope: "Corporate benefit offers, employee discounts, partner deals"
+
+3_External/Other:
+  description: "External communications that don't fit any specific company folder"
+  scope: "Miscellaneous external senders, one-off vendor contacts, uncategorized external"
+  notes: "Review periodically for new folder candidates"
+
+3_External/Reportlinker:
+  description: "Reportlinker market research reports"
+  scope: "Industry reports, market analysis, research paper notifications"
+
+3_External/Trivium:
+  description: "Trivium (external domain) communications"
+  scope: "Trivium vendor/supplier communications via external domains"
+
+3_External/Viseo:
+  description: "Viseo consulting/vendor communications"
+  scope: "Viseo project updates, invoices, coordination"
+
+# ============================================================
+# INFO & SYSTEM FOLDERS
+# ============================================================
+
+4_Info:
+  description: "Read-only informational emails, newsletters, internal broadcasts"
+  scope: "Company announcements, newsletters, digests, notifications without action items"
+  examples:
+    - "Teams notification"
+    - "SharePoint update"
+    - "Company newsletter"
+    - "Yammer digest"
+  notes: "4352 emails - largest folder by volume. Review archive rules."
+
+9_System:
+  description: "Automated system notifications, CI/CD, DevOps alerts"
+  scope: "Jira notifications, Azure DevOps alerts, build notifications, monitoring alerts, automated service emails"
+  examples:
+    - "Jira: ..."
+    - "Build failed..."
+    - "DevOps pipeline..."
+    - "Monitoring alert..."
+  key_senders: ["@atlassian.net", "dse@eumail.docusign.net"]
+
+# ============================================================
+# SPECIAL FOLDERS
+# ============================================================
+
+INBOX:
+  description: "Temporary processing folder - all incoming email lands here"
+  scope: "Zero-inbox target. Emails must be classified and moved within 24 hours."
+  notes: "677 emails remaining. Processing pipeline should be run."
+
+Archive:
+  description: "Mirror of full folder structure for emails older than 6 months"
+  scope: "Automatic archival. Every live folder has a mirror under Archive/."
+  notes: "5905 emails archived. Some Archive subfolders have no live counterpart."
