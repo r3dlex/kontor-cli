@@ -1,0 +1,103 @@
+# GLOBAL RULES — evaluated in priority order
+# Priority: higher numbers = higher priority
+# Matches on: from (regex), subject (regex), pattern (matches any field)
+# Folder targets match the EXISTING Exchange subfolder structure.
+
+# --- PRIORITY 100: SYSTEM (9_System) ---
+# Jira / Atlassian
+- from: ".*@.*\\.atlassian\\.net"
+  folder: "9_System"
+  priority: 100
+- from: "info@e\\.atlassian\\.com"
+  folder: "9_System"
+  priority: 100
+
+# DocuSign
+- from: "dse@eumail\\.docusign\\.net"
+  folder: "9_System"
+  priority: 100
+
+# CoachHub
+- from: "support@coachhub\\.io"
+  folder: "9_System"
+  priority: 100
+
+# --- PRIORITY 95: INTERNAL COMMUNICATIONS (4_Info) ---
+# Teams (no-reply)
+- from: "no-reply@teams\\.mail\\.microsoft"
+  folder: "4_Info"
+  priority: 95
+
+# Yammer
+- from: "noreply@eu\\.yammer\\.com"
+  folder: "4_Info"
+  priority: 95
+
+# SharePoint
+- from: "no-reply@sharepointonline\\.com"
+  folder: "4_Info"
+  priority: 95
+
+# Microsoft Engage
+- from: "noreply_ribgroup@eu\\.engage\\.mail\\.microsoft"
+  folder: "4_Info"
+  priority: 95
+
+# Outlook reaction digests
+- from: "no-reply@outlook\\.mail\\.microsoft"
+  folder: "4_Info"
+  priority: 95
+
+# --- PRIORITY 90: HR (1_Management/HR) ---
+# Workday
+- from: ".*@myworkday\\.com"
+  folder: "1_Management/HR"
+  priority: 90
+
+# HR Germany
+- from: "hr\\.ger@rib-software\\.com"
+  folder: "1_Management/HR"
+  priority: 90
+
+# --- PRIORITY 89: 1:1 Meetings (1_Management/1on1) ---
+- from: ".*rib-software\\.com"
+  subject: ".*1:1.*|1on1|one-on-one|one on one|Sync on.*"
+  folder: "1_Management/1on1"
+  priority: 89
+
+# --- PRIORITY 88: Leadership / Executive (1_Management/Leadership) ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Gg]eschäftsführung.*|[Vv]orstand.*|[Tt]eilwiderruf.*|Management Board.*|[Ee]xecutive.*|[Ll]eadership.*"
+  folder: "1_Management/Leadership"
+  priority: 88
+
+# --- PRIORITY 87: Travel (4_Info or 1_Management) ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Tt]ravel.*|[Rr]eise.*|[Hh]otel.*|Trip to.*"
+  folder: "4_Info"
+  priority: 87
+
+# --- PRIORITY 86: Recruiting ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Ii]nterview.*|[Rr]ecruiting.*|[Cc]andidate.*"
+  folder: "1_Management/HR"
+  priority: 86
+
+# --- PRIORITY 85: Compensation ---
+- from: ".*rib-software\\.com"
+  subject: ".*LTIP.*|Long Term Incentive.*"
+  folder: "1_Management/HR"
+  priority: 85
+
+# --- PRIORITY 84: Finance / Invoices ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Rr]echnung.*|[Ii]nvoice.*|[Bb]udget.*"
+  folder: "4_Info"
+  priority: 84
+
+# --- PRIORITY 82: HR topics (internal) ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Ee]lternzeit.*|[Kk]rankmeldung.*|[Aa]ntrag.*|[Pp]eakon.*|Check-in.*"
+  folder: "1_Management/HR"
+  priority: 82
+

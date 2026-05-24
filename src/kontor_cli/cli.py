@@ -16,6 +16,7 @@ from kontor_cli.config import (
     HimalayaNotFoundError,
 )
 from kontor_cli.logging_config import configure_logging
+from kontor_cli.mailbox_cleanup import restore_archive_projects
 from kontor_cli.pipeline import HealPipeline, RealtimePipeline, RebuildPipeline
 
 logger = logging.getLogger("kontor_cli")
@@ -218,6 +219,29 @@ def dry_run(phase: str, config_path: Path | None) -> None:
     ctx.invoke(
         process, phase=phase, dry_run=True, rules_freeze=False, config_path=config_path
     )
+
+
+@cli.command("cleanup-archive-projects")
+@click.option(
+    "--dry-run", is_flag=True, help="Show what would be done without making changes"
+)
+@click.option(
+    "--config",
+    "config_path",
+    type=click.Path(exists=False, path_type=Path),
+    default=None,
+)
+def cleanup_archive_projects(dry_run: bool, config_path: Path | None) -> None:
+    """Restore Archive/2_Projects/* mail into live folders and prune empty orphans."""
+    try:
+        Config.load(config_path)
+    except ConfigError as exc:
+        click.echo(f"Config error: {exc}", err=True)
+        sys.exit(1)
+
+    root = (config_path or Path.cwd() / "config.yaml").parent
+    report = restore_archive_projects(dry_run=dry_run, cwd=root)
+    click.echo(report)
 
 
 @cli.command("rules-freeze")

@@ -12,6 +12,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
+PAGE_SIZE = 50
+
 
 class HimalayaError(Exception):
     """Raised when a himalaya command fails."""
@@ -36,11 +38,13 @@ class Email:
     def from_json(cls, obj: dict[str, Any], folder: str) -> Email:
         """Parse from a himalaya envelope JSON dict."""
         from_field = obj.get("from", {})
-        if isinstance(from_field, dict):
-            raw_addr = from_field.get("addr", from_field.get("address", ""))
-            addr = str(raw_addr or "")
-        else:
-            addr = str(from_field)
+        addr = (
+            from_field.get("addr", from_field.get("address", ""))
+            if isinstance(from_field, dict)
+            else str(from_field)
+        )
+        if not isinstance(addr, str):
+            addr = str(addr)
         date_str = obj.get("date", "")
         try:
             date = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
@@ -93,7 +97,7 @@ def list_emails(folder: str = "INBOX", cwd: str | None = None) -> list[Email]:
                 "-o",
                 "json",
                 "--page-size",
-                "50",
+                str(PAGE_SIZE),
                 "--page",
                 str(page),
             ],
@@ -110,7 +114,7 @@ def list_emails(folder: str = "INBOX", cwd: str | None = None) -> list[Email]:
         if not envelopes:
             break
         all_envelopes.extend(envelopes)
-        if len(envelopes) < 50:
+        if len(envelopes) < PAGE_SIZE:
             break
         page += 1
         time.sleep(0.3)  # Rate limit for Exchange
@@ -120,13 +124,44 @@ def list_emails(folder: str = "INBOX", cwd: str | None = None) -> list[Email]:
 def move_email(
     email_id: str, from_folder: str, to_folder: str, cwd: str | None = None
 ) -> None:
-    """Move an email from one folder to another using himalaya message copy."""
-    _run(["message", "copy", to_folder, email_id, "-f", from_folder], cwd=cwd)
+    """Move an email from one folder to another using himalaya message move."""
+    _run(["message", "move", to_folder, email_id, "-f", from_folder], cwd=cwd)
 
 
 def create_folder(folder_name: str, cwd: str | None = None) -> None:
     """Create a new folder."""
     _run(["folder", "add", folder_name], cwd=cwd)
+
+
+def list_folders(cwd: str | None = None) -> list[str]:
+    """List mailbox folders as folder-name strings."""
+    output = _run(["folder", "list", "-o", "json"], cwd=cwd)
+    try:
+        folders = json.loads(output)
+    except json.JSONDecodeError as exc:
+        raise HimalayaError(f"himalaya returned invalid JSON: {exc}") from exc
+    if not isinstance(folders, list):
+        raise HimalayaError(
+            f"himalaya folder list returned unexpected type: {type(folders)}"
+        )
+
+    names: list[str] = []
+    for folder in folders:
+        if isinstance(folder, dict):
+            name = folder.get("name")
+        else:
+            name = folder
+        if not isinstance(name, str):
+            raise HimalayaError(
+                f"himalaya folder list returned invalid folder entry: {folder!r}"
+            )
+        names.append(name)
+    return names
+
+
+def delete_folder(folder_name: str, cwd: str | None = None) -> None:
+    """Delete an empty folder."""
+    _run(["folder", "delete", folder_name], cwd=cwd)
 
 
 def delete_email(email_id: str, folder: str, cwd: str | None = None) -> None:

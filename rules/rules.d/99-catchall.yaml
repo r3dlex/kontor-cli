@@ -1,0 +1,13 @@
+# CATCH-ALL RULES — lowest priority
+
+# Internal rib-software.com catch-all → 2_Projects/Internal
+- from: ".*rib-software\\.com"
+  folder: "2_Projects/Internal"
+  priority: 10
+
+# External catch-all → 3_External (using domain-derived folder)
+# Note: Python rules can classify these. YAML catch-all goes to 4_Info.
+- from: ".*"
+  folder: "4_Info"
+  priority: 1
+

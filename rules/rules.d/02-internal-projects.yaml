@@ -1,0 +1,99 @@
+# INTERNAL RULES — PROJECT TOPICS (2_Projects/*)
+
+# --- PRIORITY 70: Customers / Escalations ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Ww]illemen.*"
+  folder: "2_Projects/Willemen"
+  priority: 70
+- from: ".*rib-software\\.com"
+  subject: ".*[Hh]ypercare.*|[Ee]scalat.*|CRITIC.*"
+  folder: "2_Projects/Willemen"
+  priority: 70
+- from: ".*rib-software\\.com"
+  subject: ".*[Ee]iffage.*"
+  folder: "2_Projects/Eiffage"
+  priority: 70
+- from: ".*rib-software\\.com"
+  subject: ".*[Vv]inci.*"
+  folder: "2_Projects/Vinci"
+  priority: 70
+- from: ".*rib-software\\.com"
+  subject: ".*[Rr]atisbona.*|[Bb]udimex.*"
+  folder: "2_Projects/Budimex"
+  priority: 70
+
+# --- PRIORITY 68: Release Management ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Tt]hermometer.*|[Rr]elease[^s].*"
+  folder: "2_Projects/Releases"
+  priority: 68
+
+# --- PRIORITY 66: AI ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Aa]i |[Ee]stimate [Aa]i|AI [Ii]ncubator|AI [Ss]dlc|AI [Gg]uild|a i "
+  folder: "2_Projects/RIB-4.0/AI"
+  priority: 66
+
+# --- PRIORITY 65: Augment ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Aa]ugment.*"
+  folder: "2_Projects/Augment"
+  priority: 65
+
+# --- PRIORITY 64: Azure Signing ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Aa]zure.*[Ss]ign.*|Azure.*Trusted.*"
+  folder: "2_Projects/AzureSigning"
+  priority: 64
+
+# --- PRIORITY 60: Info / Corporate Comms (4_Info) ---
+- from: "ribcc@rib-software\\.com"
+  folder: "4_Info"
+  priority: 60
+- from: "Compliance@rib-software\\.com"
+  folder: "4_Info"
+  priority: 60
+- from: ".*rib-software\\.com"
+  subject: ".*[Nn]ewsletter.*|[Dd]aily [Dd]igest.*|[Tt]own [Hh]all.*|Incubator Initiative.*"
+  folder: "4_Info"
+  priority: 60
+
+# --- PRIORITY 55: Internal technical work (2_Projects/Internal) ---
+- from: ".*rib-software\\.com"
+  subject: ".*[Pp]urchase.*|[Aa]pproval.*|Pull Request.*|merge code.*"
+  folder: "2_Projects/Internal"
+  priority: 55
+- from: ".*rib-software\\.com"
+  subject: ".*[Zz]scaler.*|Bitsight.*|[Ss]ecurity.*"
+  folder: "2_Projects/Internal"
+  priority: 55
+
+# --- PRIORITY 50: Specific external (3_External/*) ---
+- from: ".*@trivium-esolutions\\.com"
+  folder: "3_External/Trivium"
+  priority: 50
+- from: ".*@miro\\.com|.*@updates\\.miro\\.com|.*@mail\\.miro\\.com"
+  folder: "3_External/Miro"
+  priority: 50
+- from: ".*@github\\.com"
+  folder: "3_External/GitHub"
+  priority: 50
+- from: ".*@news\\.mitarbeiterangebote\\.de"
+  folder: "3_External/Mitarbeiterangebote"
+  priority: 50
+- from: ".*@reportlinker\\.com"
+  folder: "3_External/Reportlinker"
+  priority: 50
+- from: ".*@coachhub\\.io"
+  folder: "3_External/CoachHub"
+  priority: 50
+- from: ".*@viseo\\.com"
+  folder: "3_External/Viseo"
+  priority: 50
+- from: ".*@herodevs\\.com"
+  folder: "3_External/HeroDevs"
+  priority: 50
+- from: ".*@microsoft\\.com"
+  folder: "3_External/Microsoft"
+  priority: 50
+
